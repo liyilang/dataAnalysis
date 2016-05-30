@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE struts PUBLIC  
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"  
+    "http://struts.apache.org/dtds/struts-2.0.dtd">  
+<struts>  
+      <package name="project" extends="struts-default">
+        <action name="login" class="com.controller.LoginAction">
+            <result name="input">/index.html</result>
+            <result name="error">/error.html</result>
+            <result name="success">/Line_Chart.html</result>       
+        </action>
+        <action name="upload" class="com.controller.UploadAction">
+            
+            <result name="error">/error.html</result>
+            <result name="success">/Line_Chart.html</result>       
+        </action>
+        
+         <action name="test_*" class="com.controller.TestAction" method="{1}">            
+        </action>
+        
+        <action name="asset_*" class="com.controller.AssetsAction" method="{1}">            
+        </action>
+        
+        <action name="alert_*" class="com.controller.AlertAction" method="{1}">
+        </action>
+     </package>      
+</struts>  

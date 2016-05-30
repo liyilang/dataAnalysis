@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Data Analysis Upload</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Loading Bootstrap -->
+    <link href="dist/css/vendor/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Loading Flat UI -->
+    <link href="dist/css/flat-ui.min.css" rel="stylesheet">
+
+    <link rel="shortcut icon" href="dist/img/favicon.ico">
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+
+   
+    <script src="dist/js/vendor/jquery.min.js"></script>
+     <script src="dist/js/upload.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+   <!-- <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
+    <script src="dist/js/vendor/video.js"></script>
+    <script src="dist/js/flat-ui.min.js"></script>
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+    <!--[if lt IE 9]>
+
+    <script src="dist/js/vendor/html5shiv.js"></script>
+    <script src="dist/js/vendor/respond.min.js"></script>
+
+
+    <![endif]-->
+      <script>
+          function upload() {
+              var time = document.getElementById("time").value;
+              if (time==null || ""==time) {
+                  alert("请填写time在excel中对应的列数!");
+                  return;
+              }
+              var parameters = document.getElementById("parameters").value;
+              if (parameters==null || ""==parameters) {
+                  alert("请填写parameters在excel中对应的列数");
+                  return;
+              }
+
+              var assetId=document.getElementById("asset").value;
+
+              document.uploadForm.action="uploadServlet?time="+time+"&parameters="+parameters+"&assetId="+assetId;
+              document.uploadForm.submit();
+          }
+      </script>
+    <style>
+     .collapse{
+        margin-top: 3%;
+       padding-right: 20%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <nav class="navbar navbar-inverse navbar-embossed" role="navigation" style="margin-bottom: 0px;">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+            <span class="sr-only">Toggle navigation</span>
+          </button>
+          <a class="navbar-brand" href="#">DAS</a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse-01" style="margin-top: 0px">
+          <ul class="nav navbar-nav">
+          	<li><a href="assetDef.html">Asset Definition</a></li>
+          	<li class="dropdown  active">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Upload<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Excel Upload</a></li>
+                <li><a href="#">Realtime Upload</a></li>
+                <li><a href="#">SQL Upload</a></li>
+              </ul>
+            </li>
+            <li ><a href="Line_Chart.html">Charts</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Alerts<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="alertDef.html">Alert Definition</a></li>
+                <li><a href="alertStatus.html">Alerts Status</a></li>
+              </ul>
+            </li>
+            
+            
+
+
+          </ul>
+
+        </div><!-- /.navbar-collapse -->
+      </nav>
+
+    </div>
+    <form name="uploadForm" method="post" enctype="multipart/form-data" action="uploadServlet">
+    <div class="container">
+      <h4>Excel Converter</h4>
+      <div class="selectbox col-md-4">
+        <h6>Assets Type</h6>
+        <select class="form-control select select-primary select-block mbl"  id="assetType" onchange="typeChanged(this.value)">
+        	<option value=0>Please Choose</option>
+
+        </select>
+        <!--<button type="button" class="btn btn-default" style=" font-weight: bold;margin-left: 5%;" data-toggle="collapse" data-target="#assetType" aria-expanded="false" aria-controls="assetType">
+          +
+        </button>
+        <div class="collapse" id="assetType">
+          <div class="well">
+            <input name="tagsinput" class="tagsinput" data-role="tagsinput" value="Clean, Fresh, Modern, Unique" />
+          </div>
+        </div>-->
+      </div>
+      <div class="selectbox col-md-4">
+        <h6>Assets Model</h6>
+        <select class="form-control select select-primary select-block mbl" id="assetModel" onchange="modelChanged(this.value)">
+			
+        </select>
+        <!--<button type="button" class="btn btn-default" style=" font-weight: bold;margin-left: 5%;" data-toggle="collapse" data-target="#assetModel" aria-expanded="false" aria-controls="assetModel">
+          +
+        </button>
+        <div class="collapse" id="assetModel">
+          <div class="well">
+            <input name="tagsinput" class="tagsinput" data-role="tagsinput" value="Clean, Fresh, Modern, Unique" />
+          </div>
+        </div>-->
+      </div>
+      <div class="selectbox col-md-4" style="margin-bottom:3%">
+        <h6>Asset</h6>
+        <select class="form-control select select-primary select-block mbl" id="asset" onchange="">
+			
+        </select>
+        <!--<button type="button" class="btn btn-default" style=" font-weight: bold;margin-left: 5%;" data-toggle="collapse" data-target="#asset" aria-expanded="true" aria-controls="asset">
+          +
+        </button>
+        <div class="collapse" id="asset">
+          <div class="well">
+            <input name="tagsinput" class="tagsinput" data-role="tagsinput" value="Clean, Fresh, Modern, Unique" />
+          </div>
+        </div>-->
+      </div>
+
+    </div>
+    <div class="container" style="margin-top:5%">
+
+      <div class="col-md-3 col-md-offset-3" style="background-color: #95a5a6">
+        <div style="background-color: rgba(22, 160, 133, 0.66);color: #ffffff;margin-left: -15px;margin-right: -15px;padding-left: 15px;">Excel Colummn Mapping</div>
+        <input type="text" name="time" id="time" class="form-control input-sm" placeholder="Time colummn" style="margin-bottom: 5%;margin-top: 5%" />
+        <input type="text" name="parameters"id="parameters" class="form-control input-sm" placeholder="Parameters colummn" style="margin-top: 5%;margin-bottom: 5%" />
+      </div>
+      <div class="col-md-2 col-md-offset-1" style="background-color: #95a5a6;color: white;padding-left: 2%">exp.<br>&nbsp;&nbsp;&nbsp;&nbsp;1<br>&nbsp;&nbsp;&nbsp;&nbsp;2,3,5</div>
+    </div>
+    <input type="file" name="file1" class="form-control input-sm" style="width: 30%;margin-top: 3%;margin-left: auto;margin-right: auto" />
+    <button onclick="upload()" class="btn btn-large btn-block btn-info" style="font-size: larger;width:20%;margin-top:1%;margin-left:auto;margin-right:auto">submit!</button>
+    <!-- /.container -->
+</form>
+
+    <!-- jQuery (necessary for Flat UI's JavaScript plugins) -->
+
+    <script type="text/javascript">
+      $('select').select2();
+      $(function() {
+          var data=1;
+          $.post("asset_getType.action",{data:data},callType,"text");
+
+      });
+
+      function callType(data){
+          data=eval(data);
+          $(data).each(function(){
+              $("#assetType").append("<option "+"value="+this.asset_id+">"+this.name+"</option>");
+          });
+      }
+
+
+
+    </script>
+
+  </body>
+</html>

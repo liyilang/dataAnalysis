@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Alert Definition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Loading Bootstrap -->
+    <link href="dist/css/vendor/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Loading Flat UI -->
+    <link href="dist/css/flat-ui.min.css" rel="stylesheet">
+
+    <link rel="shortcut icon" href="dist/img/favicon.ico">
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+
+    <script src="dist/js/upload.js"></script>
+    <script src="dist/js/vendor/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <!-- <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
+    <script src="dist/js/vendor/video.js"></script>
+    <script src="dist/js/flat-ui.min.js"></script>
+    <script src="dist/js/jquery.tabledit.min.js"></script>
+
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+    <!--[if lt IE 9]>
+    <script src="dist/js/vendor/html5shiv.js"></script>
+    <script src="dist/js/vendor/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <nav class="navbar navbar-inverse navbar-embossed" role="navigation" style="margin-bottom: 0px;">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+            <span class="sr-only">Toggle navigation</span>
+          </button>
+          <a class="navbar-brand" href="#">DAS</a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse-01">
+          <ul class="nav navbar-nav">
+          <li><a href="assetDef.html">Asset Definition</a></li>
+          <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Upload<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="upload.html">Excel Upload</a></li>
+                <li><a href="#">Realtime Upload</a></li>
+                <li><a href="#">SQL Upload</a></li>
+              </ul>
+            </li>
+            <li ><a href="Line_Chart.html">Charts</a></li>
+            <li class="dropdown active">
+              <a href="#" class="dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Alerts<span class="caret"></span></a>
+              <ul class="dropdown-menu active">
+                <li><a href="#">Alert Definition</a></li>
+                <li><a href="alertStatus.html">Alerts Status</a></li>
+              </ul>
+            </li>
+            
+            
+
+
+          </ul>
+
+        </div><!-- /.navbar-collapse -->
+      </nav>
+
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="page-header">
+            <h3>Alert Definition</h3>
+          </div>
+          <p class="help-block">Please define alert</p>
+
+
+            <div class="table-responsive">
+              <table class="table table-striped table-bordered" id="alertTable">
+                <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Asset</th>
+                  <th>Parameter</th>
+                  <th>min</th>
+                  <th>max</th>
+                  <th>Duration(min)</th>
+                  <th class="tabledit-toolbar-column"><button type="button" onclick="alertAdd()" class=" btn btn-sm btn-danger btn-add" style="float: right;border-radius: 100%"><span class="glyphicon glyphicon-plus"></span></button></th></tr>
+                </thead>
+                <tbody id="alerttb" >
+              
+                </tbody>
+              </table>
+            </div>
+
+
+
+          </div>
+
+        </div>
+
+    </div>
+    <!-- /.container -->
+<script>
+  $(document).ready(function(){
+  var data=1;
+  $.post("alert_getAlertDefs.action",{data:data},insertAlertDef,"json");
+ 
+  });
+
+
+  function alertAdd(){
+	$("#alerttb").append('<tr><td><span class="tabledit-span tabledit-identifier"></span><input class="tabledit-input tabledit-identifier" type="hidden" name="id" value="" disabled=""></td><td class="tabledit-view-mode"><span class="tabledit-span"></span><select class="tabledit-input form-control input-sm" name="asset_id" style="display: none;" disabled=""><option value="1">water quality</option><option value="2">HVAC</option><option value="3">Iron Man</option></select></td><td class="tabledit-view-mode"><span class="tabledit-span"></span><select class="tabledit-input form-control input-sm" name="param_id" style="display: none;" disabled=""><option value="1">C1</option><option value="2">O3</option><option value="3">NO2</option><option value="4">SO2</option></select></td><td class="tabledit-view-mode"><span class="tabledit-span"></span><input class="tabledit-input form-control input-sm" type="text" name="min" value="" style="display: none;" disabled=""></td><td class="tabledit-view-mode"><span class="tabledit-span"></span><input class="tabledit-input form-control input-sm" type="text" name="max" value="" style="display: none;" disabled=""></td><td class="tabledit-view-mode"><span class="tabledit-span"></span><input class="tabledit-input form-control input-sm" type="text" name="duration" value="" style="display: none;" disabled=""></td><td style="white-space: nowrap; width: 1%;"><div class="tabledit-toolbar btn-toolbar" style="text-align: left;"><div class="btn-group btn-group-sm" style="float: none;"><button type="button" class="tabledit-edit-button btn btn-sm btn-default" style="float: none;"><span class="glyphicon glyphicon-pencil"></span></button><button type="button" class="tabledit-delete-button btn btn-sm btn-default" style="float: none;"><span class="glyphicon glyphicon-trash"></span></button></div><button type="button" class="tabledit-save-button btn btn-sm btn-success" style="display: none; float: none;">Save</button><button type="button" class="tabledit-confirm-button btn btn-sm btn-danger" style="display: none; float: none;">Confirm</button><button type="button" class="tabledit-restore-button btn btn-sm btn-warning" style="display: none; float: none;">Restore</button></div></td></tr>');
+  }
+  
+  function insertAlertDef(data){
+  	$(data).each(function(){
+  		$("#alerttb").append("<tr><td>"+this.id+"</td><td>"+this.asset_name+"</td><td>"+this.param_name+"</td><td>"+this.min+"</td><td>"+this.max+"</td><td>"+this.duration+"</td></tr>");
+  	});
+  	
+  	$('#alertTable').Tabledit({
+      url: 'alert_update.action',
+      columns: {
+        identifier: [0, 'id'],
+        editable: [[1, 'asset_id', '{"1": "water quality", "2": "HVAC", "3": "Iron Man"}'], [2, 'param_id', '{"1": "C1", "2": "O3", "3": "NO2","4":"SO2"}'], [3, 'min',],[4, 'max'],[5,'duration']]
+      },
+      onDraw: function() {
+        console.log('onDraw()');
+      },
+      onSuccess: function(data, textStatus, jqXHR) {
+        console.log('onSuccess(data, textStatus, jqXHR)');
+        console.log(data);
+        console.log(textStatus);
+        console.log(jqXHR);
+      },
+      onFail: function(jqXHR, textStatus, errorThrown) {
+        console.log('onFail(jqXHR, textStatus, errorThrown)');
+        console.log(jqXHR);
+        console.log(textStatus);
+        console.log(errorThrown);
+      },
+      onAlways: function() {
+        console.log('onAlways()');
+      },
+      onAjax: function(action, serialize) {
+        console.log('onAjax(action, serialize)');
+        console.log(action);
+        console.log(serialize);
+      }
+    });
+  }
+</script>
+
+
+  </body>
+</html>

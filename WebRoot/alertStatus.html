@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Asset Status</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Loading Bootstrap -->
+    <link href="dist/css/vendor/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Loading Flat UI -->
+    <link href="dist/css/flat-ui.min.css" rel="stylesheet">
+
+    <link rel="shortcut icon" href="dist/img/favicon.ico">
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+
+    <script src="dist/js/upload.js"></script>
+    <script src="dist/js/vendor/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <!-- <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
+    <script src="dist/js/vendor/video.js"></script>
+    <script src="dist/js/flat-ui.min.js"></script>
+    <script src="dist/js/jquery.tabledit.min.js"></script>
+
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+    <!--[if lt IE 9]>
+    <script src="dist/js/vendor/html5shiv.js"></script>
+    <script src="dist/js/vendor/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <nav class="navbar navbar-inverse navbar-embossed" role="navigation" style="margin-bottom: 0px;">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+            <span class="sr-only">Toggle navigation</span>
+          </button>
+          <a class="navbar-brand" href="#">DAS</a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse-01">
+          <ul class="nav navbar-nav">
+          	<li><a href="assetDef.html">Asset Definition</a></li>
+          	<li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Upload<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="upload.html">Excel Upload</a></li>
+                <li><a href="#">Realtime Upload</a></li>
+                <li><a href="#">SQL Upload</a></li>
+              </ul>
+            </li>
+            <li ><a href="Line_Chart.html">Charts</a></li>
+            <li class="dropdown active">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Alerts<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="alertDef.html">Alert Definition</a></li>
+                <li><a href="#">Alerts Status</a></li>
+              </ul>
+            </li>
+            
+           
+
+
+          </ul>
+
+        </div><!-- /.navbar-collapse -->
+      </nav>
+
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="page-header">
+            <h3>Alert Status</h3>
+          </div>
+          <p class="help-block">Please review alert status</p>
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th>#</th>
+              <th>Asset</th>
+              <th>Parameter</th>
+              <th>Status</th>
+              <th>Start Time</th>
+              <th>Duration(min)</th>
+            </thead>
+            <tbody id="alerttb">
+            
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+    <!-- /.container -->
+	<script>
+		$(document).ready(function(){
+			var data=1;
+  			$.post("alert_getAlerts.action",{data:data},insertAlerts,"json");
+ 
+  });
+  
+  	function insertAlerts(data){
+  		$(data).each(function(){
+  			var status;
+  			if(this.status==1){
+  				status="Exceed";
+  			}else{
+  				status="Lower";
+  			}
+  			
+  			$("#alerttb").append("<tr><td>"+this.id+"</td><td>"+this.asset_name+"</td><td>"+this.param_name+"</td><td>"+status+"</td><td>"+this.starttime+"</td><td>"+this.duration+"</td></tr>");
+  		});
+  	}
+		
+	</script>
+	
+  </body>
+</html>

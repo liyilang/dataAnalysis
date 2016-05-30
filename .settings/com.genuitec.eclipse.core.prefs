@@ -1,0 +1,3 @@
+eclipse.preferences.version=1
+validator.Checked=WebRoot/dist/js/vendor/respond.min.js,WebRoot/dist/js/vendor/jquery.min.js,WebRoot/dist/js/flat-ui.js,WebRoot/dist/js/flat-ui.min.js
+validator.Unchecked=

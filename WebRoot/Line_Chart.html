@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Line Chart</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Loading Bootstrap -->
+    <link href="dist/css/vendor/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Loading Flat UI -->
+    <link href="dist/css/flat-ui.min.css" rel="stylesheet">
+
+    <link rel="shortcut icon" href="dist/img/favicon.ico">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <link href="dist/css/bootstrap-datetimepicker.min.css"/>
+    <link href="dist/css/line.css"/>
+    <script src="dist/js/vendor/jquery.min.js"></script>
+    <script src="dist/js/upload.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script src="dist/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="dist/js/bootstrap-datetimepicker.de.js"></script>
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+    <!--[if lt IE 9]>
+    <script src="dist/js/vendor/html5shiv.js"></script>
+    <script src="dist/js/vendor/respond.min.js"></script>
+    <![endif]-->
+    <script src="dist/js/Chart.js"></script>
+    <script src="dist/js/line.js"></script>
+
+    <style>
+      #canvas-holder1 {
+        width: 300px;
+        margin: 5%;
+      }
+      #canvas-holder2 {
+        width: 100%;
+        margin: auto;
+      }
+      #chartjs-tooltip {
+        opacity: 1;
+        position: absolute;
+        background: rgba(0, 0, 0, .7);
+        color: white;
+        padding: 3px;
+        border-radius: 3px;
+        -webkit-transition: all .1s ease;
+        transition: all .1s ease;
+        pointer-events: none;
+        -webkit-transform: translate(-50%, 0);
+        transform: translate(-50%, 0);
+      }
+      .chartjs-tooltip-key{
+        display:inline-block;
+        width:10px;
+        height:10px;
+      }
+      .form-control{
+        margin-bottom: 6%;
+      }
+      .form-group{
+        width:50%;
+        margin-left: 10%;
+        margin-bottom: -4%;
+        float: left;
+      }
+
+    </style>
+  </head>
+  <body>
+
+  <div class="container">
+    <nav class="navbar navbar-inverse navbar-embossed" role="navigation" style="margin-bottom: 0px;">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+          <span class="sr-only">Toggle navigation</span>
+        </button>
+        <a class="navbar-brand" href="#">DAS</a>
+      </div>
+      <div class="collapse navbar-collapse" id="navbar-collapse-01">
+        <ul class="nav navbar-nav">
+        <li><a href="assetDef.html">Asset Definition</a></li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Upload<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="upload.html">Excel Upload</a></li>
+              <li><a href="#">Realtime Upload</a></li>
+              <li><a href="#">SQL Upload</a></li>
+            </ul>
+          </li>
+          <li class="active"><a href="#fakelink">Charts</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Alerts<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="alertDef.html">Alert Definition</a></li>
+              <li><a href="alertStatus.html">Alerts Status</a></li>
+            </ul>
+          </li>
+          
+          
+
+
+        </ul>
+
+      </div><!-- /.navbar-collapse -->
+    </nav>
+   <div class="row">
+      <div class="col-md-3">
+        <img src="dist/img/icons/png/intel.jpg" style="width:50%;margin-top: 10%" />
+         <div style="margin-top: 15%">
+
+           <h6>Asset Type</h6>
+            <select class="form-control select select-primary select-block mbl" id="assetType" onchange="typeChanged(this.value)">
+
+            </select>
+           <h6>Asset Model</h6>
+            <select class="form-control select select-primary select-block mbl" id="assetModel" onchange="modelChanged(this.value)">
+
+            </select>
+           <h6>Asset</h6>
+            <select class="form-control select select-primary select-block mbl" id="asset" onchange="assetChanged(this.value)">
+
+            </select>
+           <h6>Parameters</h6>
+            <select multiple="multiple" style="width: 10px" class="form-control multiselect multiselect-info" id="param" onchange="">
+
+            </select>
+         </div>
+      </div>
+      <div class="col-md-9">
+        <div class="row">
+       <div id="canvas-holder1" class="col-md-6">
+        <canvas id="chart1" width="10%" height="3%" />
+       </div>
+      <div class="col-md-6" style="margin-top:4%">
+        <div class="form-group ">
+
+          <div class="input-group date form_datetime " data-date="" data-date-format="yyyy-mm-dd HH:ii" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd HH:ii">
+            <input class="form-control" size="16" type="text" id="starttime" value="" readonly style="color: black" placeholder="start time" onchange="dateValid()"  >
+            <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+          </div>
+          <input type="hidden" id="dtp_input2" value="" /><br/>
+        </div>
+
+        <div class="form-group" >
+
+          <div class="input-group date form_datetime" data-date="" data-date-format="yyyy-mm-dd HH:ii" data-link-field="dtp_input3" data-link-format="yyyy-mm-dd HH:ii">
+            <input class="form-control" size="16" type="text" id="endtime" value="" readonly style="color: black" placeholder="end time" onchange="dateValid()">
+            <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+          </div>
+          <input type="hidden" id="dtp_input3" value="" /><br/>
+        </div>
+        <button id="submit" class="btn btn-primary" style="float: left;margin-left: 5%" onclick="draw()" >Plot</button>
+      </div>
+        </div>
+          <div id="canvas-holder2">
+            <canvas id="chart2" width="100%" height="50%" />
+          </div>
+
+          <div id="chartjs-tooltip"></div>
+      </div>
+   </div>
+
+  </div>
+
+    <!-- /.container -->
+
+
+    <!-- jQuery (necessary for Flat UI's JavaScript plugins) -->
+
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script type="text/javascript">
+  
+    $(function() {
+      var data=1;
+      $.post("asset_getType.action",{data:data},callType,"text");
+
+    });
+
+    function callType(data){
+      data=eval(data);
+      $(data).each(function(){
+        $("#assetType").append("<option "+"value="+this.asset_id+">"+this.name+"</option>");
+      });
+    }
+
+
+  </script>
+
+    <script src="dist/js/vendor/video.js"></script>
+    <script src="dist/js/flat-ui.min.js"></script>
+    <script type="text/javascript">
+      $('select').select2();
+    </script>
+  <script type="text/javascript">
+     $('.form_datetime').datetimepicker({
+      //language:  'fr',
+      format: "yyyy-mm-dd HH:ii",
+      weekStart: 1,
+      todayBtn:  1,
+      autoclose: 1,
+      todayHighlight: 1,
+      startView: 2,
+      forceParse: 0,
+      showMeridian: 0,
+      minuteStep:60,
+      pickerPosition:"bottom-left"
+    });
+    
+  </script>
+
+  </body>
+</html>
